@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+
+{% block contant %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <style>
+    th, td  {
+        text-align: left;
+        padding: 8px;
+        border: 1px solid #ddd;
+        font-size: 24px;
+
+      }
+
+    th{
+        background-color: #4CAF50;
+        color: white;
+      }
+      tr:nth-child(even){background-color: #b2aeae}
+
+
+    .page-header {
+      background-color: #4CAF50;
+      color: #fff;
+      padding: 10px;
+      margin-bottom: 20px;
+      text-align: center;
+
+    }
+
+    .image-container {
+      position: relative;
+      display: inline-block;
+      overflow: hidden;
+      width: auto;
+      height: auto;
+    }
+
+    .image-container img {
+      max-width: none;
+    }
+
+    .image-text {
+        position: absolute;
+        display: none;
+      }
+
+    .image-container:hover .image-text {
+      opacity: 1;
+    }
+
+    .form-group{
+      text-align: left;
+      padding: 8px;
+      border: 1px solid #ddd;
+      margin-bottom: 10px;
+    }
+    .form-group1{
+      text-align: center;
+      padding: 10px;
+      border: 1px solid #ddd;
+      margin-bottom: 15px;
+    }
+
+
+    label{
+      display: inline-block;
+      width: 200px;
+      background-color:  #4CAF50;
+      color: white;
+      padding: 8px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+
+    }
+
+    input[type=number], select {
+      width: 200px;
+      padding: 8px;
+      border: 1px solid #666464;
+      border-radius: 4px;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+    }
+
+    button[type=submit] {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 14px;
+
+    }
+
+    button[type=submit]:hover {
+      background-color: #45a049;
+    }
+  </style>
+
+</head>
+<body>
+
+
+<a href="{% url 'newdvice' %}" class="btn btn-primary">add new router</a>
+
+<hr>
+
+  
+  <table>
+    <thead>
+      <tr>
+        <th>name</th>
+        <th>Host</th>
+        <th>Username</th>
+        <th></th>
+        <th></th>             
+        <th></th>      
+
+      </tr>
+    </thead>
+    <tbody>
+
+      {% for device in devices %}
+        <tr>
+          <td>{{ device.name }}</td>
+          <td>{{ device.host }}</td>
+          <td>{{ device.username }}</td>
+          <td>
+            <form method="post" action="{% url 'delete_device' device.id %}">
+              {% csrf_token %}
+              <button type="submit">Delete</button>
+            </form>
+          </td>
+          <td>
+            <form method="post" action="{% url 'edit_device' device.id %}">
+              {% csrf_token %}
+              <button type="submit">Edit</button>
+            </form>
+          </td>
+          <td>
+            <form method="post" action="{% url 'device_info' device.id %}">
+              {% csrf_token %}
+              <button type="submit">login</button>
+            </form>
+          </td>
+
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

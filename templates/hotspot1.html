@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+{% block contant %} 
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hotspot Form</title>
+  <style>
+    .page-header {
+      background-color: #4CAF50;
+      color: #fff;
+      padding: 10px;
+      margin-bottom: 20px;
+      text-align: center;
+
+    }
+
+    .image-container {
+      position: relative;
+      display: inline-block;
+      overflow: hidden;
+      width: auto;
+      height: auto;
+    }
+
+    .image-container img {
+      max-width: none;
+    }
+
+    .image-text {
+        position: absolute;
+        display: none;
+      }
+
+    .image-container:hover .image-text {
+      opacity: 1;
+    }
+
+    .form-group{
+      text-align: left;
+      padding: 8px;
+      border: 1px solid #ddd;
+      margin-bottom: 10px;
+    }
+    .form-group1{
+      text-align: center;
+      padding: 10px;
+      border: 1px solid #ddd;
+      margin-bottom: 15px;
+    }
+
+
+    label{
+      display: inline-block;
+      width: 200px;
+      background-color:  #4CAF50;
+      color: white;
+      padding: 8px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+
+    }
+
+    input[type=number], select {
+      width: 200px;
+      padding: 8px;
+      border: 1px solid #666464;
+      border-radius: 4px;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+    }
+
+    button[type=submit] {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      width: 200px;
+      font-size: 24px;
+
+    }
+
+    button[type=submit]:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h2>Hotspot Form</h2>
+    <form method="post" enctype="multipart/form-data" id="hotspot-form">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="image">اختر صورة:</label>
+        <input type="file" class="form-control-file" id="image" name="image">
+        <br>
+        <div class="image-container">
+          <img id="preview-image"   style="max-width: 90mm ; max-height: 45mm;">
+          <div id="text" class="image-text" style="font-weight: bold; font-size: 15px;color:red ;position: absolute; top:70px;left:150px"> UserName </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="text_y"> الاحداثيات</label>
+        <input type="number" id="text_x" name="text_x" value="" />
+        <input type="number" id="text_y" name="text_y" value="" />
+      </div>
+      <div class="form-group">
+        <label for="profile">Profile:</label>
+        <input type="text" id="profile" name="profile" value="" />
+      </div>
+      <div class="form-group">
+        <label for="num_digits">عدد أرقام اسم المستخدم:</label>
+        <input type="number" id="num_digits" name="num_digits" min="4" max="12" value="8" >
+      </div>
+
+      <div class="form-group">
+        <label for="num_users">عدد كروت هوت اسبوت :</label>
+        <input type="number"   id="num_users" name="num_users" min="1" max="2000" value="0">
+      </div>
+      <div class="form-group">
+        <label for="num_images_per_page">عدد الكروت في الصفحه:</label>
+        <input type="number"   id="num_images_per_page" name="num_images_per_page" min="1" max="60" value="30">
+      </div>
+      <div class="form-group">
+        <label for="uptime">وقت المستخدمه بالساعات:</label>
+        <input type="number"   id="uptime" name="uptime" min="1" max="24" value="0">
+      </div>
+      <div class="form-group">
+        <label for="total_limit">حجم الباقه بالميجات :</label>
+        <input type="number"   id="total_limit" name="total_limit" >
+      </div>
+
+      <div class="form-group">
+        <label for="num_columns">عدد الاعمده في الصفحه:</label>
+        <input type="number"   id="num_columns" name="num_columns" min="1" max="3" value="3">
+      </div>
+      <div class="form-group">
+        <label for="font_size">حجم الخط :</label>
+        <input type="number"   id="font_size" name="font_size" min="1" max="24" value="14">
+      </div>
+      <div class="form-group1">
+        <button type="submit">إنشاء الكروت</button>
+      </div>
+    </form>
+  </div>
+
+
+  
+  <script>
+    const inputImage = document.querySelector('#image');
+    const previewImage = document.querySelector('#preview-image');
+    let isDragging = false;
+    let mouseOffset = { x: 0, y: 0 };
+
+    inputImage.addEventListener('change', function() {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.addEventListener('load', function() {
+          previewImage.setAttribute('src', reader.result);
+          previewImage.onload = function() {
+            const aspectRatio = previewImage.clientWidth / previewImage.clientHeight;
+            const containerWidth = document.querySelector('.image-container').clientWidth;
+            const containerHeight = document.querySelector('.image-container').clientHeight;
+            const containerAspectRatio = containerWidth / containerHeight;
+            if (aspectRatio > containerAspectRatio) {
+              previewImage.style.width = "100%";
+              previewImage.style.height = "auto";
+            } else {
+              previewImage.style.width = "auto";
+              previewImage.style.height = "100%";
+            }
+            const text = document.querySelector('#text');
+            text.style.display = "block";
+          };
+        });
+        reader.readAsDataURL(file);
+      }
+    });
+
+    const text = document.querySelector('#text');
+    text.addEventListener('mousedown', function(event) {
+      isDragging = true;
+      mouseOffset = { x: event.offsetX, y: event.offsetY };
+    });
+
+    document.addEventListener('mouseup', function() {
+      isDragging = false;
+    });
+
+    document.addEventListener('mousemove', function(event) {
+      if (isDragging) {
+        const imageWidth = previewImage.clientWidth;
+        const imageHeight = previewImage.clientHeight;
+        const textWidth = text.clientWidth;
+        const textHeight = text.clientHeight;
+
+        const container =document.querySelector('.image-container');
+        const containerRect = container.getBoundingClientRect();
+
+        let text_x = event.clientX - containerRect.left - mouseOffset.x;
+        let text_y = event.clientY - containerRect.top - mouseOffset.y;
+
+        if (text_x < 0) {
+          text_x = 0;
+        }
+
+        if (text_y < 0) {
+          text_y = 0;
+        }
+
+        if (text_x + textWidth > imageWidth) {
+          text_x = imageWidth - textWidth;
+        }
+
+        if (text_y + textHeight > imageHeight) {
+          text_y = imageHeight - textHeight;
+        }
+
+        text.style.top = `${text_y}px`;
+        text.style.left = `${text_x}px`;
+
+        document.querySelector('#text_x').value = parseInt(text_x);
+        document.querySelector('#text_y').value = parseInt(text_y);
+        document.querySelector('#userTopValue').value = parseInt(text_y);
+        document.querySelector('#userLeftValue').value = parseInt(text_x);
+
+        mouseOffset = { x: event.offsetX, y: event.offsetY };
+      }
+    });
+
+    function updateTextPosition() {
+      const imageWidth = previewImage.clientWidth;
+      const imageHeight = previewImage.clientHeight;
+      const textWidth = text.clientWidth;
+      const textHeight = text.clientHeight;
+      const text_x = parseFloat(document.querySelector('#text_x').value);
+      const text_y = parseFloat(document.querySelector('#text_y').value);
+
+      text.style.top = `${text_y}px`;
+      text.style.left = `${text_x}px`;
+
+      document.querySelector('#text_x').value = text_x;
+      document.querySelector('#text_y').value = text_y;
+      document.querySelector('#userTopValue').value = text_y;
+      document.querySelector('#userLeftValue').value = text_x;
+    }
+
+    document.querySelector('#text_x').addEventListener('change', updateTextPosition);
+    document.querySelector('#text_y').addEventListener('change', updateTextPosition);
+  </script>
+  </body>
+</html>
+{% endblock %}

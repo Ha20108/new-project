@@ -1,0 +1,115 @@
+
+{% include 'parts/navbar.html' %}
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>عنوان الصفحة</title>
+  <style>
+    /* تعديل حجم المربع الذي يحتوي على النموذج */
+form {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* تعديل حجم الأشكال */
+.background .shape {
+  height: 100px;
+  width: 100px;
+}
+
+/* تعديل حجم الخطوط */
+h3 {
+  font-size: 22px;
+  line-height: 28px;
+}
+
+label {
+  font-size: 16px;
+}
+
+input {
+  height: 40px;
+  font-size: 14px;
+}
+
+button {
+  margin-top: 30px;
+  font-size: 16px;
+  padding: 12px 0;
+}
+
+a {
+  font-size: 14px;
+}
+/* تحديد حجم الشاشة ونسبة التكبير الأولية */
+@media only screen and (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+}
+
+/* تعديل حجم الخطوط والأزرار وتحسين القراءة */
+@media only screen and (max-width: 576px) {
+  body {
+    font-size: 12px;
+  }
+  button {
+    font-size: 14px;
+    height: 40px;
+  }
+}
+
+/* تعديل حجم الأزرار والأدوات والحواشي */
+@media only screen and (max-width: 414px) {
+  button {
+    font-size: 12px;
+    height: 36px;
+  }
+  input[type="text"], input[type="email"], input[type="password"] {
+    font-size: 12px;
+    margin-bottom: 10px;
+    padding: 8px;
+    width: 100%;
+  }
+  select {
+    font-size: 12px;
+    margin-bottom: 10px;
+    padding: 8px;
+    width: 100%;
+  }
+  .form-group label {
+    font-size: 12px;
+  }
+}
+
+/* تعديل حجم الصور */
+@media only screen and (max-width: 320px) {
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}.btn-primary {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      width: 200px;
+      font-size: 20px;
+
+    }
+
+
+  </style>
+
+
+
+
+
+{% block contant %}
+
+{% endblock contant %}
+
+
+{% include 'parts/footer.html' %}

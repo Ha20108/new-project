@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load blog_tags %}
+
+{% block contant %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <style>
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+  
+      th, td , form {
+        text-align: left;
+        padding: 8px;
+        border: 1px solid #ddd;
+      }
+  
+      tr:nth-child(even){background-color: #b2aeae}
+  
+      th{
+        background-color: #4CAF50;
+        color: white;
+      }
+          h3 {
+        background-color: #ff0505;
+        color: white;
+              
+      }
+    </style>
+  </head>
+<body>
+    <h1> Hotspot users  for {{user}} roters </h1>
+
+    <hr>
+
+  
+    <table>
+      <thead>
+        <tr>
+            <th>#</th>
+          <th>name</th>
+          <th>uptime</th>
+          <th>Profile</th> 
+          <th>state</th>
+     
+        </tr>
+      </thead>
+      <tbody>
+  
+        {% for hots in hots %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ hots.name }}</td>
+            <td>{{ hots.uptime }}</td>
+            <td>{{ hots.profile }} </td>
+
+            </td>
+            <td>
+              {% if hots.disabled == 'false' %}
+                enable
+              {% else %}
+                disabled
+              {% endif %}
+            </td>
+
+          
+
+    
+          
+            
+
+
+
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+
+
+{% endblock %}

@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+{% block contant %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Device Info</title>
+	<style>
+		table {
+			border-collapse: collapse;
+			width: 100%;
+		}
+
+		th, td , form {
+			text-align: left;
+			padding: 8px;
+			border: 1px solid #ddd;
+		}
+
+		tr:nth-child(even){background-color: #c0bdbd}
+
+		th{
+			background-color: #4CAF50;
+			color: white;
+		}
+        h3 {
+			background-color: #ff0505;
+			color: white;
+            
+		}
+	</style>
+	
+</head>
+<body>
+	<h1>Device Info</h1>
+	<table>
+		<tr>
+			<th>Device</th>
+			<td>{{ device }}</td>
+		</tr>
+        <tr>
+			<th>Host</th>
+			<td>{{ device.host }}</td>
+		</tr>
+		<tr>
+			<th>Message</th>
+			<td>{{ message }}</td>
+		</tr>
+        <tr>
+			<th>Public IP</th>
+			<td>{{ puplicip }}</td>
+		</tr>
+		<tr>
+			<th>Users</th>
+			<td>{{ users }}</td>
+		</tr>
+		<tr>
+			<th>Active</th>
+			<td>{{ active }}</td>
+		</tr>
+        {% for system in system %}
+        <tr>
+			<th>system uptime</th>
+			<td>{{ system.uptime.decode }}</td>
+		</tr>
+		<tr>
+			<th>system version</th>
+			<td>{{ system.version.decode }}</td>
+		</tr>
+		<tr>
+			<th>CPU Load</th>
+			<td>{{ cpuload.decode }}%</td>
+		</tr>
+
+    
+        {% endfor %}
+    
+	</table>
+</body>
+</html>
+
+<form method="get">
+
+    <label for="suser">Enter Hotspot User:</label>
+    <input type="text" id="suser" name="suser">
+    <input type="submit" value="Submit">
+  </form>
+<table>
+    
+{% if user_d.id %}
+        <tr>
+            <th>User</th>
+            <td>{{ user_d.name }} </td>
+        </tr>
+
+        <tr>
+            <th>Limit Bytes</th>
+            <td>{{ limit_bytes }} / MB</td>
+        </tr>
+        <tr>
+            <th>Uptime</th>
+            <td>{{ uptime }}</td>
+        </tr>
+        <tr>
+            <th>Total limit used</th>
+            <td>{{ packets_out }}  / MB</td>
+        </tr>
+        <tr>
+            <th>Mac Address</th>
+            <td>{{ mac_address }}</td>
+        </tr>
+        <tr>
+            <th>Stat</th>
+            <td>{{ user_d.disabled }}</td>
+        </tr>
+{% elif user_d == 0 %}
+    <th> enter your user want check it </th>
+
+        enter 
+{% else %}
+        <tr>
+            <h3> User not found </h3>
+        </tr>
+
+
+
+{% endif %}
+
+
+
+</table>
+
+<hr>
+
+<a href="{% url 'hotspot_user' pk=device.pk %}" class="btn btn-primary">hotspot user</a>
+<a href="{% url 'hotspot' pk=device.pk %}" class="btn btn-primary">Create Hotspot User</a>
+
+
+
+
+
+
+
+{% endblock %}
+
+
